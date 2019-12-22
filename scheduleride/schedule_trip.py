@@ -6,7 +6,8 @@ from django.conf import settings
 
 from scheduleride.email import Mail
 from scheduleride.log_messages import LogMessage
-from scheduleride.raw_queries import TRIPS_TO_CHECK_QUERY, UPDATE_TRIP_DETAILS_QUERY
+from scheduleride.raw_queries import (TRIPS_TO_CHECK_QUERY, UPDATE_TRIP_DETAILS_QUERY,
+                                      UPDATE_STATUS_QUERY)
 from utils import ExecRawQuery, Cab, GoogleMaps
 
 logger = logging.getLogger('custom-module')
@@ -97,6 +98,8 @@ class ScheduleTrip:
 
             if pending_time <= settings.UBER_TIME + settings.ERROR_MARGIN_TIME:
                 ScheduleTrip.book_uber(response, email, source)
+                query = UPDATE_STATUS_QUERY.format(trip_id=trip_id)
+                ExecRawQuery.execute(query)
             else:
                 # TODO: Updates trip details in bulk instead of updating one by one
                 ScheduleTrip.update_trip_details(ride_time, traffic_time,

@@ -55,6 +55,7 @@ var saveTripRequest = function(source, destination, time, email) {
         data: JSON.stringify(trip_detail),
         contentType: 'application/json',
         success: function(data) {
+            alert("Request saved successfully, we will send you an email to book the cab!")
             console.log("success")
         },
         error: function(err) {

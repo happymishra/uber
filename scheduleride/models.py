@@ -4,11 +4,6 @@ from utils.googlemaps import GoogleMaps
 
 
 class Trips(models.Model):
-    class TripState(models.IntegerChoices):
-        NEW = 1
-        IN_PROGRESS = 2
-        DONE = 3
-
     id = models.AutoField(primary_key=True)
     source = models.CharField(max_length=50)
     destination = models.CharField(max_length=50)
@@ -16,7 +11,7 @@ class Trips(models.Model):
     email = models.EmailField(max_length=100)
     creation_time = models.DateTimeField(auto_now=True)
     ride_time = models.IntegerField()
-    state = models.CharField(max_length=5, choices=TripState.choices, default=TripState.NEW)
+    state = models.IntegerField(default=0)
     pending_time = models.IntegerField(default=0)
     frequency = models.SmallIntegerField(default=0)
     traffic_time = models.IntegerField()
