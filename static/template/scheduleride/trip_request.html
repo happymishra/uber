@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+  {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <title>Request a ride</title>
+  </head>
+  <body>
+    <div class="input-body">
+      <div class="trip-request-form">
+        Source: <input type="text" name="source" id="source"> <br>
+        Destination: <input type="text" name="destination" id="destination"> <br>
+        Time: <input type="datetime-local" name="time" id="time"> <br>
+        Email: <input type="email" name="email" id="email"> <br>
+        <input type="button" id="request-ride" value="Request ride"> <br>
+      </div>
+    </div>
+    <div id="logging">
+
+    </div>
+  </body>
+    <script src="{% static 'js/library/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/scheduleride/trip_request.js' %}"></script>
+</html>

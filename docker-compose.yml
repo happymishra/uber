@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  web:
+    image: schedule-ride
+    container_name: schedule-ride
+    hostname: schedule-ride
+    build: .
+    environment:
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - GOOGLE_MAP_API_KEY=${GOOGLE_MAP_API_KEY}
+    command: >
+      bash -c "set -e
+      && python manage.py collectstatic --no-input --clear
+      && gunicorn uber.wsgi:application --bind 0.0.0.0:8000 --workers 4 --timeout 300 --access-logfile /var/log/uber/gunicorn.log --error-logfile /var/log/uber/gunicorn_error.log --log-level info
+      && /bin/bash"
+    restart: always
+    expose:
+      - 8000
+    volumes:
+      - /var/log/uber:/var/log/uber
+      - /home/jenkins/uber/staticfiles:/home/jenkins/uber/staticfiles
+    tty: true
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    hostname: nginx
+    build: ./nginx
+    ports:
+    - "1337:80"
+    volumes:
+      - /var/log/uber:/var/log/uber
+      - /home/jenkins/uber/staticfiles:/home/jenkins/uber/staticfiles
+    depends_on:
+      - web
+
+
+
+
+
+
+
