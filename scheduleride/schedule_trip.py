@@ -44,6 +44,7 @@ class ScheduleTrip:
                                                           email=email,
                                                           uber_time=nearest_uber))
 
+        # TODO: Send email asynchronously
         Mail.send_email("Time to Book uber", "Kindly book your uber now!",
                         settings.EMAIL_HOST_USER, [email])
 
@@ -97,6 +98,7 @@ class ScheduleTrip:
             if pending_time <= settings.UBER_TIME + settings.ERROR_MARGIN_TIME:
                 ScheduleTrip.book_uber(response, email, source)
             else:
+                # TODO: Updates trip details in bulk instead of updating one by one
                 ScheduleTrip.update_trip_details(ride_time, traffic_time,
                                                  pending_time, trip_id)
 
